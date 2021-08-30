@@ -2,22 +2,20 @@ import React, { ReactNode } from "react";
 
 import MenuItem from "../menu-item/menu-item.component";
 
-import './directory.styles.scss'
+import "./directory.styles.scss";
 
-interface DirectoryProps {
-    
-}
+interface DirectoryProps {}
 
 interface DirectoryItem {
-    title: string
-    imageUrl: string
-    id: number
-    linkUrl: string
-    size?: 'large'
+  title: string;
+  imageUrl: string;
+  id: number;
+  linkUrl: string;
+  size?: "large";
 }
 
 interface DirectoryState {
-    sections: DirectoryItem[]
+  sections: DirectoryItem[];
 }
 
 class Directory extends React.Component<DirectoryProps, DirectoryState> {
@@ -64,15 +62,13 @@ class Directory extends React.Component<DirectoryProps, DirectoryState> {
 
   render(): ReactNode {
     return (
-        <div className='directory-menu'>
-            {
-                this.state.sections.map(({id, ...otherProps}) => (
-                    <MenuItem key={id} {...otherProps} />
-                ))
-            }
-        </div>
-    )
+      <div className="directory-menu">
+        {this.state.sections.map(({ id, ...otherProps }) => (
+          <MenuItem key={id} {...otherProps} />
+        ))}
+      </div>
+    );
   }
 }
 
-export default Directory
+export default Directory;
