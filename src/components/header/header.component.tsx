@@ -1,12 +1,13 @@
+import { User } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
-import {ReactComponent as Logo} from '../../assets/logo.svg'
+import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { auth } from "../../firebase/firebase.utils";
+import './header.styles.scss';
 
-import './header.styles.scss'
 
 interface HeaderProps {
-    currentUser: any
+    currentUser: User
 }
 
 const Header = (props: HeaderProps) => (

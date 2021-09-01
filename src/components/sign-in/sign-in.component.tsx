@@ -1,9 +1,8 @@
 import React, { ReactNode } from "react";
-import FormInput from "../form-input/form-input.component";
-import CustomButton from "../custom-button/custom-button.component";
 import { signInWithGoogle } from "../../firebase/firebase.utils";
-
-import './sign-in.styles.scss'
+import CustomButton from "../custom-button/custom-button.component";
+import FormInput from "../form-input/form-input.component";
+import './sign-in.styles.scss';
 
 interface SignInProps {
 
@@ -40,17 +39,19 @@ class SignIn extends React.Component<SignInProps, SignInState> {
     render(): ReactNode {
         return (
             <div className='sign-in'>
-                <h2>I already have an account</h2>
+                <h2 className='title'>I already have an account</h2>
                 <span>Sign in with your email and password</span>
 
-                <form onSubmit={this.handleSubmit}>
+                <form className='sign-in-form' onSubmit={this.handleSubmit}>
                     <FormInput 
+                        type="text"
                         name="email" 
                         label="Email" 
                         value={this.state.email} 
                         handleChange={this.handleChange} 
                         required />
                     <FormInput 
+                        type="password"
                         name="password" 
                         label="Password" 
                         value={this.state.password} 
