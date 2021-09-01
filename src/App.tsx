@@ -4,6 +4,7 @@ import { getDoc } from "firebase/firestore";
 import React, { Dispatch, ReactNode } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
+import { Redirect } from "react-router-dom";
 import "./App.css";
 import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
@@ -16,6 +17,7 @@ import { setCurrentUser } from "./redux/user/user.actions";
 
 interface AppProps {
   setCurrentUser: (user: User | null) => void;
+  currentUser: User
 }
 
 class App extends React.Component<AppProps> {
@@ -47,14 +49,15 @@ class App extends React.Component<AppProps> {
         <Switch>
           <Route exact={true} path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route path="/signin" component={SigninAndSignupPage} />
+          <Route path="/signin" render={() => this.props?.currentUser ? (<Redirect to='/' />) : (<SigninAndSignupPage />)} />
         </Switch>
       </div>
     );
   }
 }
 
+const mapStatetoProps = (state: any) => ({currentUser: state?.user?.currentUser})
 const mapDispatchToProps = (dispatch: Dispatch<Action<User | null>>) => ({
   setCurrentUser: (user: User | null) => dispatch(setCurrentUser(user)),
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStatetoProps, mapDispatchToProps)(App);

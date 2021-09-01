@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User as FirebaseUser, UserCredential } from "firebase/auth";
-import { collection, CollectionReference, doc, DocumentData, DocumentReference, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { collection, CollectionReference, doc, DocumentReference, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { User } from "../models/user.model";
 
 const config = {
