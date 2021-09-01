@@ -3,11 +3,11 @@ import { Action } from "../store"
 import { ACTION_SET_CURRENT_USER } from "./user.actions"
 
 interface UserState {
-    currentUser: User|null
+    currentUser: User|undefined
 }
 
 const INITIAL_STATE: UserState = {
-    currentUser: null
+    currentUser: undefined
 }
 
 const userReducer = (state = INITIAL_STATE, action: Action<User>) => {
