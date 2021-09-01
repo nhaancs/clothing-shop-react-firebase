@@ -6,4 +6,9 @@ const middlewares = [logger]
 
 const store = createStore(rootReducer, applyMiddleware(...middlewares))
 
+export interface Action<T> {
+    type: string
+    payload?: T
+}
+
 export default store

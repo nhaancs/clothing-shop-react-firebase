@@ -1,25 +1,12 @@
 import React, { ReactNode } from "react";
 import SHOP_DATA from "./shop.data";
-import CollectionPreview from "../../components/collection-preview/collection-preview.component"
+import CollectionPreview from "../../components/collection-preview/collection-preview.component";
+import { Collection } from "../../models/collection.model";
 
 interface ShopPageProps {}
 
 interface ShopPageState {
-    collections: Collection[]
-}
-
-export interface Collection {
-  id: number;
-  title: string;
-  routeName: string
-  items: CollectionItem[]
-}
-
-export interface CollectionItem {
-    id: number
-    name: string
-    imageUrl: string
-    price: number
+  collections: Collection[];
 }
 
 class ShopPage extends React.Component<ShopPageProps, ShopPageState> {
@@ -27,22 +14,23 @@ class ShopPage extends React.Component<ShopPageProps, ShopPageState> {
     super(props);
 
     this.state = {
-        collections: SHOP_DATA
+      collections: SHOP_DATA,
     };
   }
 
   render(): ReactNode {
-    const {collections} = this.state
+    const { collections } = this.state;
     return (
       <div className="shop-page">
-        {
-          collections.map(collection => (
-            <CollectionPreview title={collection?.title} items={collection?.items} /> 
-          ))
-        }
+        {collections.map((collection) => (
+          <CollectionPreview
+            title={collection?.title}
+            items={collection?.items}
+          />
+        ))}
       </div>
     );
   }
 }
 
-export default ShopPage
+export default ShopPage;

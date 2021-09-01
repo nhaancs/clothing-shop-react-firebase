@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
-import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User, UserCredential } from "firebase/auth";
-import { collection, doc, DocumentData, DocumentReference, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User as FirebaseUser, UserCredential } from "firebase/auth";
+import { collection, CollectionReference, doc, DocumentData, DocumentReference, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { User } from "../models/user.model";
 
 const config = {
   apiKey: "AIzaSyDMBZzi_maTT4_OcaWMp5tiYui8k6e_KHg",
@@ -12,14 +13,14 @@ const config = {
 };
 
 export const createUserProfileDocument = async (
-  userAuth: User|null, 
+  userAuth: FirebaseUser|null, 
   additionalData?: any
-): Promise<DocumentReference<DocumentData>> => {
+): Promise<DocumentReference<User>> => {
   if (!userAuth) {
     return Promise.resolve(null) as any
   }
 
-  const userRef = doc(collection(firestore, 'users'), userAuth.uid)
+  const userRef = doc(collection(firestore, 'users') as CollectionReference<User>, userAuth.uid)
   const snapShot = await getDoc(userRef)
   if (!snapShot.exists()) {
     const {displayName, email} = userAuth
