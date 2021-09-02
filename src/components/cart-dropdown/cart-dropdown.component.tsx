@@ -1,12 +1,13 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
+import { selectCartItems } from "../../redux/cart/cart.selectors";
 import { RootState } from "../../redux/store";
 import CartItemCmp from "../cart-item/cart-item.component";
 import CustomButton from "../custom-button/custom-button.component";
 
 import './cart-dropdown.styles.scss'
 
-const mapStateToProps = (state: RootState) => ({cartItems: state.cart.cartItems})
+const mapStateToProps = (state: RootState) => ({cartItems: selectCartItems(state)})
 const connector = connect(mapStateToProps)
 type PropsFromRedux = ConnectedProps<typeof connector>
 

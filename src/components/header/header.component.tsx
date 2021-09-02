@@ -3,14 +3,16 @@ import { connect, ConnectedProps } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { auth } from "../../firebase/firebase.utils";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
 import { RootState } from "../../redux/store";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import CartIcon from "../cart-icon/cart-icon.component";
 import "./header.styles.scss";
 
-const mapStateToProps = ({user: {currentUser}, cart: {hidden}}: RootState) => ({
-  currentUser,
-  cartHidden: hidden
+const mapStateToProps = (state: RootState) => ({
+  currentUser: selectCurrentUser(state),
+  cartHidden: selectCartHidden(state),
 });
 const connector = connect(mapStateToProps);
 

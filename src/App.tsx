@@ -15,9 +15,10 @@ import ShopPage from "./pages/shop/shop.component";
 import SigninAndSignupPage from "./pages/signin-and-signup/signin-and-signup.component";
 import { RootState } from "./redux/store";
 import { setCurrentUser } from "./redux/user/user.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors";
 
 const mapStateToProps = (state: RootState) => ({
-  currentUser: state?.user?.currentUser,
+  currentUser: selectCurrentUser(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentUser: (user: User | undefined) => dispatch(setCurrentUser(user)),
