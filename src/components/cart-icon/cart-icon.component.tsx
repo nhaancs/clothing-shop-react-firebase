@@ -12,9 +12,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 const connector = connect(null, mapDispatchToProps)
 
-type CartIconPropsFromRedux = ConnectedProps<typeof connector>
+type PropsFromRedux = ConnectedProps<typeof connector>
 
-interface CartIconProps extends CartIconPropsFromRedux {}
+interface CartIconProps extends PropsFromRedux {}
 
 const CartIcon = (props: CartIconProps) => {
     return (

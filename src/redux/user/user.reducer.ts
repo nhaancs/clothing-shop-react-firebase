@@ -1,6 +1,6 @@
 import { User } from "../../models/user.model"
 import { Action } from "../store"
-import { ACTION_SET_CURRENT_USER } from "./user.actions"
+import { USER_ACTION_SET_CURRENT_USER } from "./user.actions"
 
 interface UserState {
     currentUser: User|undefined
@@ -12,7 +12,7 @@ const INITIAL_STATE: UserState = {
 
 const userReducer = (state = INITIAL_STATE, action: Action<User>) => {
     switch (action.type) {
-        case ACTION_SET_CURRENT_USER:
+        case USER_ACTION_SET_CURRENT_USER:
             return {
                 ...state,
                 currentUser: action.payload
