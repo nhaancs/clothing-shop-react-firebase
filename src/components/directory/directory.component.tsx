@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { selectDirectories } from "../../redux/directory/directory.selectors";
 import { RootState } from "../../redux/store";
