@@ -10,7 +10,7 @@ const INITIAL_STATE: UserState = {
     currentUser: undefined
 }
 
-const userReducer = (state = INITIAL_STATE, action: Action<User>) => {
+const userReducer = (state = INITIAL_STATE, action: Action<User>): UserState => {
     switch (action.type) {
         case USER_ACTION_SET_CURRENT_USER:
             return {
