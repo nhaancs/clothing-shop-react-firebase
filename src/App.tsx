@@ -10,7 +10,7 @@ import "./App.css";
 import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { User } from "./models/user.model";
-import Checkout from "./pages/checkout/checkout.component";
+import CheckoutPage from "./pages/checkout/checkout.component";
 import HomePage from "./pages/home/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import SigninAndSignupPage from "./pages/signin-and-signup/signin-and-signup.component";
@@ -57,7 +57,7 @@ class App extends React.Component<AppProps> {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={Checkout} />
+          <Route exact path="/checkout" component={CheckoutPage} />
           <Route
             path="/signin"
             render={() =>

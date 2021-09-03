@@ -17,7 +17,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 
 interface CheckoutProps extends PropsFromRedux {}
 
-const Checkout = ({cartItems, cartTotal}: CheckoutProps) => (
+const CheckoutPage = ({cartItems, cartTotal}: CheckoutProps) => (
     <div className='checkout-page'>
         <div className='checkout-header'>
             <div className='header-block'>
@@ -46,4 +46,4 @@ const Checkout = ({cartItems, cartTotal}: CheckoutProps) => (
     </div>
 )
 
-export default connector(Checkout)
+export default connector(CheckoutPage)
