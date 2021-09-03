@@ -1,10 +1,12 @@
 import { createStore, applyMiddleware } from "redux";
 import logger from 'redux-logger'
+import { persistStore } from "redux-persist";
 import rootReducer from "./root-reducer";
 
 const middlewares = [logger]
 
-const store = createStore(rootReducer, applyMiddleware(...middlewares))
+export const store = createStore(rootReducer, applyMiddleware(...middlewares))
+export const persistor = persistStore(store)
 
 export interface Action<T> {
     type: string
@@ -15,5 +17,3 @@ export interface Action<T> {
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
-export default store
