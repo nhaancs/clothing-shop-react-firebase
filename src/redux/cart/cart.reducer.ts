@@ -1,7 +1,7 @@
 import { CartItem } from "../../models/cart.model"
 import { Action } from "../store"
-import { CART_ACTION_ADD_ITEM, CART_ACTION_TOGGLE_HIDDEN } from "./cart.actions"
-import { addItemToCart } from "./cart.utils"
+import { CART_ACTION_ADD_ITEM, CART_ACTION_DECREASE_OR_REMOVE_ITEM, CART_ACTION_REMOVE_ITEM, CART_ACTION_TOGGLE_HIDDEN } from "./cart.actions"
+import { addItemToCart, decreaseQuantityOrRemoveCartItem, removeItemToCart } from "./cart.utils"
 
 interface CartState {
     hidden: boolean
@@ -24,6 +24,16 @@ const cartReducer = (state = INITIAL_STATE, action: Action<CartItem>) => {
             return {
                 ...state,
                 cartItems: addItemToCart(state.cartItems, action.payload as CartItem)
+            }
+        case CART_ACTION_REMOVE_ITEM:
+            return {
+                ...state,
+                cartItems: removeItemToCart(state.cartItems, action.payload as CartItem)
+            }
+        case CART_ACTION_DECREASE_OR_REMOVE_ITEM:
+            return {
+                ...state,
+                cartItems: decreaseQuantityOrRemoveCartItem(state.cartItems, action.payload as CartItem)
             }
         default:
             return state
