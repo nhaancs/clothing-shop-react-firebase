@@ -22,4 +22,4 @@ const ShopPage = ({collections}: ShopPageProps) => (
   </div>
 )
 
-export default ShopPage;
+export default connector(ShopPage);
