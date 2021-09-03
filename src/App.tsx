@@ -11,7 +11,7 @@ import Header from "./components/header/header.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { User } from "./models/user.model";
 import Checkout from "./pages/checkout/checkout.component";
-import HomePage from "./pages/homepage/homepage.component";
+import HomePage from "./pages/home/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import SigninAndSignupPage from "./pages/signin-and-signup/signin-and-signup.component";
 import { RootState } from "./redux/store";
