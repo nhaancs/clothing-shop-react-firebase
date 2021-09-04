@@ -5,7 +5,6 @@ import { RootState } from "../../redux/store";
 import CollectionPreview from "../collection-preview/collection-preview.component";
 import "./collections-overview.styles.scss";
 
-
 const mapStateToProps = (state: RootState) => ({
   collections: selectCollections(state),
 });
