@@ -1,12 +1,12 @@
 export interface Collection {
-  id: number;
+  id: string;
   title: string;
   routeName: string;
   items: CollectionItem[];
 }
 
 export interface CollectionItem {
-  id: number;
+  id: string;
   name: string;
   imageUrl: string;
   price: number;

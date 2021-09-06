@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User as FirebaseUser, UserCredential } from "firebase/auth";
-import { collection, CollectionReference, doc, DocumentReference, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { collection, CollectionReference, doc, DocumentReference, Firestore, getDoc, getFirestore, setDoc, writeBatch, QuerySnapshot } from "firebase/firestore";
+import { Collection } from "../models/collection.model";
 import { User } from "../models/user.model";
 
 const config = {
@@ -34,11 +35,39 @@ export const createUserProfileDocument = async (
         ...additionalData
       })
     } catch (err) {
-      console.log('error creating user', err.message)
+      console.log('error creating user', err)
     }
   }
 
   return userRef
+}
+
+export const addCollectionAndDocuments = async <T>(collectionKey: string, documents: T[]): Promise<void> => {
+  const collectionRef = collection(firestore, collectionKey)
+  const batch = writeBatch(firestore)
+  documents.forEach(document => {
+    const newDocRef = doc(collectionRef)
+    batch.set(newDocRef, document)
+  });
+  return await batch.commit()
+}
+
+export const convertCollectionsSnapshotToMap = (collectionsSnapshot: QuerySnapshot<Collection>): {[key: string]: Collection} => {
+  const transformedCollections: Collection[] = collectionsSnapshot.docs.map(doc => {
+    const {title, items} = doc.data()
+
+    return {
+      title: title,
+      items: items,
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id
+    }
+  })
+
+  return transformedCollections.reduce<{[key: string]: Collection}>((accumulator, collection, _, __) => {
+    accumulator[collection.routeName] = collection
+    return accumulator
+  }, {})
 }
 
 export const firebaseApp = firebase.initializeApp(config)

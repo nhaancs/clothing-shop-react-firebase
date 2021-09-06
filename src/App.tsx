@@ -19,7 +19,8 @@ import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
 const mapStateToProps = (state: RootState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
+  // collections: selectCollections(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentUser: (user: User | undefined) => dispatch(setCurrentUser(user)),
@@ -40,9 +41,11 @@ class App extends React.Component<AppProps> {
           id: snapshot.id,
           ...snapshot.data(),
         } as User);
+
       } else {
         this.props.setCurrentUser(undefined);
       }
+      // addCollectionAndDocuments('collections', this.props.collections.map(({title, items}) => ({title, items})))
     });
   }
 
