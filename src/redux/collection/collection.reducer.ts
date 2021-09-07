@@ -1,25 +1,41 @@
 import { Collection } from "../../models/collection.model";
 import { Action } from "../store";
-import { COLLECTION_ACTION_UPDATE_COLLECTIONS } from "./collection.actions";
+import { CollectionAction, COLLECTION_ACTION_FETCH_COLLECTIONS_FAILURE, COLLECTION_ACTION_FETCH_COLLECTIONS_START, COLLECTION_ACTION_FETCH_COLLECTIONS_SUCCESS } from "./collection.actions";
 
 interface CollectionState {
-  collections: { [key: string]: Collection };
+  collections: Map<string, Collection>;
+  fetching: boolean;
+  errorMessage: string;
 }
 
 const INITIAL_STATE: CollectionState = {
-  collections: {},
+  collections: new Map<string, Collection>(),
+  fetching: false,
+  errorMessage: ''
 };
 
 const collectionReducer = (
   state = INITIAL_STATE,
-  action: Action<{ [key: string]: Collection }>
+  action: Action<CollectionAction>
 ): CollectionState => {
   switch (action.type) {
-    case COLLECTION_ACTION_UPDATE_COLLECTIONS:
+    case COLLECTION_ACTION_FETCH_COLLECTIONS_START:
       return {
         ...state,
-        collections: action.payload as { [key: string]: Collection }
-      }
+        fetching: true
+      };
+    case COLLECTION_ACTION_FETCH_COLLECTIONS_SUCCESS:
+      return {
+        ...state,
+        fetching: false,
+        collections: action.payload as Map<string, Collection>,
+      };
+    case COLLECTION_ACTION_FETCH_COLLECTIONS_FAILURE:
+      return {
+        ...state,
+        fetching: false,
+        errorMessage: action.payload as string,
+      };
     default:
       return state;
   }

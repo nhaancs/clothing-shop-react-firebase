@@ -52,7 +52,7 @@ export const addCollectionAndDocuments = async <T>(collectionKey: string, docume
   return await batch.commit()
 }
 
-export const convertCollectionsSnapshotToMap = (collectionsSnapshot: QuerySnapshot<Collection>): {[key: string]: Collection} => {
+export const convertCollectionsSnapshotToMap = (collectionsSnapshot: QuerySnapshot<Collection>): Map<string, Collection> => {
   const transformedCollections: Collection[] = collectionsSnapshot.docs.map(doc => {
     const {title, items} = doc.data()
 
@@ -64,10 +64,10 @@ export const convertCollectionsSnapshotToMap = (collectionsSnapshot: QuerySnapsh
     }
   })
 
-  return transformedCollections.reduce<{[key: string]: Collection}>((accumulator, collection, _, __) => {
-    accumulator[collection.routeName] = collection
+  return transformedCollections.reduce<Map<string, Collection>>((accumulator, collection, _, __) => {
+    accumulator.set(collection.routeName, collection)
     return accumulator
-  }, {})
+  }, new Map<string, Collection>())
 }
 
 export const firebaseApp = firebase.initializeApp(config)
