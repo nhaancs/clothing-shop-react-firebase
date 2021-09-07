@@ -7,17 +7,17 @@ import { RootState } from "../../redux/store";
 
 import './collection.styles.scss'
 
-interface RouteParams {
+export interface CollectionPageRouteParams {
     collectionId: string
 }
 
-const mapStateToProps = (state: RootState, ownProps: RouteComponentProps<RouteParams>) => ({
+const mapStateToProps = (state: RootState, ownProps: RouteComponentProps<CollectionPageRouteParams>) => ({
     collection: selectOneCollection(ownProps?.match?.params?.collectionId)(state)
 })
 
 const connector = connect(mapStateToProps)
 
-type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps<RouteParams>
+type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps<CollectionPageRouteParams>
 
 const CollectionPage = ({match, collection}: PropsFromRedux) => (
     <div className='collection-page'>
