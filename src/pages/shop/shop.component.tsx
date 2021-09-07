@@ -3,22 +3,23 @@ import {
   CollectionReference,
   onSnapshot,
   query,
-  Unsubscribe,
+  Unsubscribe
 } from "@firebase/firestore";
 import React, { ReactNode } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { ExtractRouteParams, StaticContext } from "react-router";
 import { Route, RouteComponentProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import CollectionsOverview from "../../components/collections-overview/collections-overview.component";
 import WithSpinner from "../../components/with-spinner/with-spinner.component";
 import {
   convertCollectionsSnapshotToMap,
-  firestore,
+  firestore
 } from "../../firebase/firebase.utils";
 import { Collection } from "../../models/collection.model";
 import { updateCollections } from "../../redux/collection/collection.actions";
-import CollectionPage, { CollectionPageRouteParams } from "../collection/collection.component";
+import CollectionPage, {
+  CollectionPageRouteParams
+} from "../collection/collection.component";
 
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
