@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
-import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User as FirebaseUser, UserCredential } from "firebase/auth";
-import { collection, CollectionReference, doc, DocumentReference, Firestore, getDoc, getFirestore, setDoc, writeBatch, QuerySnapshot } from "firebase/firestore";
+import { Auth, getAuth, GoogleAuthProvider, UserCredential } from "firebase/auth";
+import { collection, CollectionReference, doc, DocumentReference, Firestore, getDoc, getFirestore, QuerySnapshot, setDoc, writeBatch } from "firebase/firestore";
 import { Collection } from "../models/collection.model";
 import { User } from "../models/user.model";
 
@@ -14,17 +14,17 @@ const config = {
 };
 
 export const createUserProfileDocument = async (
-  userAuth: FirebaseUser|null, 
+  userAuth: UserCredential|null, 
   additionalData?: any
 ): Promise<DocumentReference<User>> => {
   if (!userAuth) {
     return Promise.resolve(null) as any
   }
 
-  const userRef = doc(collection(firestore, 'users') as CollectionReference<User>, userAuth.uid)
+  const userRef = doc(collection(firestore, 'users') as CollectionReference<User>, userAuth.user.uid)
   const snapShot = await getDoc(userRef)
   if (!snapShot.exists()) {
-    const {displayName, email} = userAuth
+    const {displayName, email} = userAuth.user
     const createdAt = new Date()
 
     try {
@@ -75,8 +75,7 @@ export const firebaseApp = firebase.initializeApp(config)
 export const auth: Auth = getAuth(firebaseApp)
 export const firestore: Firestore = getFirestore(firebaseApp)
 
-const provider = new GoogleAuthProvider()
-provider.setCustomParameters({prompt: 'select_account'})
-export const signInWithGoogle = (): Promise<UserCredential> => signInWithPopup(auth, provider)
+export const googleProvider = new GoogleAuthProvider()
+googleProvider.setCustomParameters({prompt: 'select_account'})
 
 export default firebase

@@ -1,13 +1,24 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { ReactNode } from "react";
-import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
+import { connect, ConnectedProps } from "react-redux";
+import { Dispatch } from "redux";
+import { auth } from "../../firebase/firebase.utils";
+import { googleSignInStartAction } from "../../redux/user/user.actions";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 import './sign-in.styles.scss';
 
-interface SignInProps {
 
+const mapDispathToProps = (dispatch: Dispatch) => {
+    return {
+        googleSignInStart: () => dispatch(googleSignInStartAction())
+    }
 }
+
+const connector = connect(null, mapDispathToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+interface SignInProps extends PropsFromRedux {}
 
 interface SignInState {
     email: string
@@ -53,7 +64,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                         type="text"
                         name="email" 
                         label="Email" 
-                        value={this.state.email} 
+                        value={this.state.email}
                         handleChange={this.handleChange} 
                         required />
                     <FormInput 
@@ -66,7 +77,11 @@ class SignIn extends React.Component<SignInProps, SignInState> {
 
                     <div className="buttons">
                         <CustomButton type="submit">Sign In</CustomButton>
-                        <CustomButton onClick={signInWithGoogle} isGoogleSignIn>Sign in with Google</CustomButton>
+                        <CustomButton 
+                            type='button' 
+                            onClick={this.props.googleSignInStart} 
+                            isGoogleSignIn
+                            >Sign in with Google</CustomButton>
                     </div>
                 </form>
             </div>
@@ -74,4 +89,4 @@ class SignIn extends React.Component<SignInProps, SignInState> {
     }
 }
 
-export default SignIn
+export default connector(SignIn)
