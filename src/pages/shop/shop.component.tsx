@@ -1,29 +1,16 @@
 import React, { ReactNode } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Route, RouteComponentProps } from "react-router-dom";
-import { Action } from "redux";
-import { ThunkDispatch } from "redux-thunk";
-import CollectionsOverview from "../../components/collections-overview/collections-overview.component";
-import WithSpinner from "../../components/with-spinner/with-spinner.component";
-import { fetchCollectionsStartAsync } from "../../redux/collection/collection.actions";
-import { selectCollectionFetching } from "../../redux/collection/collection.selectors";
-import { RootState } from "../../redux/store";
-import CollectionPage, {
-  CollectionPageRouteParams
-} from "../collection/collection.component";
+import { Dispatch } from "redux";
+import CollectionOverviewContainer from "../../components/collections-overview/collections-overview.container";
+import { fetchCollectionsStartAction } from "../../redux/collection/collection.actions";
+import CollectionPageContainer from "../collection/collection.container";
 
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
-const CollectionPageWithSpinner = WithSpinner(CollectionPage);
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, void, Action>) => ({
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStartAction()),
 });
 
-const mapStateToProps = (state: RootState) => ({
-  isCollectionFetching: selectCollectionFetching(state),
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 type PropsFromReduxAndRoute = ConnectedProps<typeof connector> &
   RouteComponentProps;
@@ -32,31 +19,21 @@ interface ShopPageProps extends PropsFromReduxAndRoute {}
 
 class ShopPage extends React.Component<ShopPageProps> {
   componentDidMount() {
-    this.props?.fetchCollectionsStartAsync();
+    this.props?.fetchCollectionsStart();
   }
 
   render(): ReactNode {
-    const { match, isCollectionFetching } = this.props;
+    const { match } = this.props;
     return (
       <div className="shop-page">
         <Route
           exact
           path={match.path}
-          render={(props: RouteComponentProps) => (
-            <CollectionsOverviewWithSpinner
-              loading={isCollectionFetching}
-              {...props}
-            />
-          )}
+          component={CollectionOverviewContainer}
         />
         <Route
           path={`${match.path}/:collectionId`}
-          render={(props: RouteComponentProps<CollectionPageRouteParams>) => (
-            <CollectionPageWithSpinner
-              loading={isCollectionFetching}
-              {...props}
-            />
-          )}
+          component={CollectionPageContainer}
         />
       </div>
     );

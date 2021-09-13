@@ -15,7 +15,7 @@ import HomePage from "./pages/home/home.component";
 import ShopPage from "./pages/shop/shop.component";
 import SigninAndSignupPage from "./pages/signin-and-signup/signin-and-signup.component";
 import { RootState } from "./redux/store";
-import { setCurrentUser } from "./redux/user/user.actions";
+import { setCurrentUserAction } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
 const mapStateToProps = (state: RootState) => ({
@@ -23,7 +23,7 @@ const mapStateToProps = (state: RootState) => ({
   // collections: selectCollections(state)
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCurrentUser: (user: User | undefined) => dispatch(setCurrentUser(user)),
+  setCurrentUser: (user: User | undefined) => dispatch(setCurrentUserAction(user)),
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -63,7 +63,7 @@ class App extends React.Component<AppProps> {
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route
             path="/signin"
-            render={() =>
+            render={(_) =>
               this.props?.currentUser ? (
                 <Redirect to="/" />
               ) : (

@@ -2,14 +2,14 @@ import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Dispatch } from "redux";
 import { CartItem } from "../../models/cart.model";
-import { decreaseOrRemoveCartItem, removeCartItem, addCartItem } from "../../redux/cart/cart.actions";
+import { decreaseOrRemoveCartItemAction, removeCartItemAction, addCartItemAction } from "../../redux/cart/cart.actions";
 
 import './checkout-item.styles.scss'
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    removeCartItem: (item: CartItem) => dispatch(removeCartItem(item)),
-    decreaseOrRemoveCartItem: (item: CartItem) => dispatch(decreaseOrRemoveCartItem(item)),
-    addCartItem: (item: CartItem) => dispatch(addCartItem(item))
+    removeCartItem: (item: CartItem) => dispatch(removeCartItemAction(item)),
+    decreaseOrRemoveCartItem: (item: CartItem) => dispatch(decreaseOrRemoveCartItemAction(item)),
+    addCartItem: (item: CartItem) => dispatch(addCartItemAction(item))
 }) 
 const connector = connect(null, mapDispatchToProps)
 

@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { Dispatch } from "redux";
 import { CartItem } from "../../models/cart.model";
 import { CollectionItem } from "../../models/collection.model";
-import { addCartItem } from "../../redux/cart/cart.actions";
+import { addCartItemAction } from "../../redux/cart/cart.actions";
 import CustomButton from "../custom-button/custom-button.component";
 
 import './collection-item.styles.scss'
@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
             ...item,
             quantity: 1
         }
-        return dispatch(addCartItem(cartItem))
+        return dispatch(addCartItemAction(cartItem))
     }
 })
 

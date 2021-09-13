@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { Dispatch } from "redux";
 
 import {ReactComponent as ShoppingIcon} from '../../assets/cart.svg'
-import { toggleCartHidden } from "../../redux/cart/cart.actions";
+import { toggleCartHiddenAction } from "../../redux/cart/cart.actions";
 import { selectCartItemsCount } from "../../redux/cart/cart.selectors";
 import { RootState } from "../../redux/store";
 
@@ -14,7 +14,7 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    toggleCartHidden: () => dispatch(toggleCartHidden())
+    toggleCartHidden: () => dispatch(toggleCartHiddenAction())
 })
 const connector = connect(mapStateToProps, mapDispatchToProps)
 

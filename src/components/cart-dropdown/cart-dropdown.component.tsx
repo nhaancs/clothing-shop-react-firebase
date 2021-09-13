@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { CartItem } from "../../models/cart.model";
-import { toggleCartHidden } from "../../redux/cart/cart.actions";
+import { toggleCartHiddenAction } from "../../redux/cart/cart.actions";
 import { selectCartItems } from "../../redux/cart/cart.selectors";
 import { RootState } from "../../redux/store";
 import CartItemCmp from "../cart-item/cart-item.component";
@@ -36,7 +36,7 @@ const CartDropdown = ({ cartItems, history, dispatch }: CartDropdownProps) => (
     <CustomButton
       onClick={() => {
         history.push("/checkout");
-        dispatch(toggleCartHidden());
+        dispatch(toggleCartHiddenAction());
       }}
     >
       GO TO CHECKOUT
