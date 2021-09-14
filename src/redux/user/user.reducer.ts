@@ -1,6 +1,6 @@
 import { User } from "../../models/user.model"
 import { Action } from "../store"
-import { USER_ACTION_SIGN_IN_FAILURE, USER_ACTION_SIGN_IN_SUCCESS, USER_ACTION_SIGN_OUT_FAILURE, USER_ACTION_SIGN_OUT_SUCCESS } from "./user.actions"
+import { USER_ACTION_SIGN_IN_FAILURE, USER_ACTION_SIGN_IN_SUCCESS, USER_ACTION_SIGN_OUT_FAILURE, USER_ACTION_SIGN_OUT_SUCCESS, USER_ACTION_SIGN_UP_FAILURE } from "./user.actions"
 
 
 interface UserState {
@@ -29,6 +29,7 @@ const userReducer = (state = INITIAL_STATE, action: Action<User|string>): UserSt
             }
         case USER_ACTION_SIGN_IN_FAILURE:
         case USER_ACTION_SIGN_OUT_FAILURE:
+        case USER_ACTION_SIGN_UP_FAILURE:
             return {
                 ...state,
                 error: action.payload as string

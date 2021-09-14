@@ -1,14 +1,20 @@
-import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { ReactNode } from "react";
-import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
+import { connect, ConnectedProps } from "react-redux";
+import { Dispatch } from "redux";
+import { SignUpInfo, signUpStartAction } from "../../redux/user/user.actions";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
+import './sign-up.styles.scss';
 
-import './sign-up.styles.scss'
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    signUpStart: (signUpInfo: SignUpInfo) => dispatch(signUpStartAction(signUpInfo))
+})
 
-interface SignUpProps {
+const connector = connect(null, mapDispatchToProps)
 
-}
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+interface SignUpProps extends PropsFromRedux{}
 
 interface SignUpState {
     email: string
@@ -32,6 +38,8 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 
     handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault()
+
+        const {signUpStart} = this.props
         const {displayName, email, password, confirmPassword} = this.state
 
         if (password !== confirmPassword) {
@@ -39,19 +47,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
             return
         }
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            await createUserProfileDocument(userCredential.user, {displayName})
-
-            this.setState({
-                email: '',
-                password: '',
-                confirmPassword: '',
-                displayName: ''
-            })
-        } catch (err) {
-            console.error(err)
-        }
+        signUpStart({email, password, displayName})
     }
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,4 +102,4 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
     }
 }
 
-export default SignUp
+export default connector(SignUp)

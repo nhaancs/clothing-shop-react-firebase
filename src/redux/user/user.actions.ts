@@ -1,3 +1,4 @@
+import { User as FirebaseUser } from "@firebase/auth";
 import { User } from "../../models/user.model";
 import { Action } from "../store";
 
@@ -44,5 +45,32 @@ export const signOutSuccessAction = (): Action<void> => ({
 export const USER_ACTION_SIGN_OUT_FAILURE = 'USER_ACTION_SIGN_OUT_FAILURE'
 export const signOutFailureAction = (error: string): Action<string> => ({
     type: USER_ACTION_SIGN_OUT_FAILURE,
+    payload: error
+})
+
+export interface SignUpInfo {
+    email: string
+    password: string
+    displayName: string
+}
+export const USER_ACTION_SIGN_UP_START = 'USER_ACTION_SIGN_UP_START'
+export const signUpStartAction = (signUpInfo: SignUpInfo): Action<SignUpInfo> => ({
+    type: USER_ACTION_SIGN_UP_START,
+    payload: signUpInfo
+})
+
+export interface SignedUpUser {
+    firebaseUser: FirebaseUser,
+    displayName: string
+}
+export const USER_ACTION_SIGN_UP_SUCCESS = 'USER_ACTION_SIGN_UP_SUCCESS'
+export const signUpSuccessAction = (signedUpUser: SignedUpUser): Action<SignedUpUser> => ({
+    type: USER_ACTION_SIGN_UP_SUCCESS,
+    payload: signedUpUser
+})
+
+export const USER_ACTION_SIGN_UP_FAILURE = 'USER_ACTION_SIGN_UP_FAILURE'
+export const signUpFailureAction = (error: string): Action<string> => ({
+    type: USER_ACTION_SIGN_UP_FAILURE,
     payload: error
 })
