@@ -74,6 +74,9 @@ export function* onSignOutSaga() {
     yield takeLatest(USER_ACTION_SIGN_OUT_START, signOut)
 }
 
+
+
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignInStartSaga),

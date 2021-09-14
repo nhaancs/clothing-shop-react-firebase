@@ -20,3 +20,8 @@ export const CART_ACTION_DECREASE_OR_REMOVE_ITEM = "CART_ACTION_DECREASE_OR_REMO
 export const decreaseOrRemoveCartItemAction = (item: CartItem): Action<CartItem> => {
     return { type: CART_ACTION_DECREASE_OR_REMOVE_ITEM, payload: item};
 }
+
+export const CART_ACTION_CLEAR_CART= "CART_ACTION_CLEAR_CART";
+export const clearCartAction = (): Action<void> => {
+    return {type: CART_ACTION_CLEAR_CART}
+}
