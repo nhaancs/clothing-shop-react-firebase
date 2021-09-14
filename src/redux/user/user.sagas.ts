@@ -4,7 +4,7 @@ import { all, call, put, takeLatest } from "@redux-saga/core/effects";
 import { auth, createUserProfileDocument, getCurrentUser, googleProvider } from "../../firebase/firebase.utils";
 import { User } from "../../models/user.model";
 import { Action } from "../store";
-import { EmailAndPassword, signInFailureAction, signInSuccessAction, USER_ACTION_CHECK_USER_SESSION, USER_ACTION_EMAIL_SIGN_IN_START, USER_ACTION_GOOGLE_SIGN_IN_START } from "./user.actions";
+import { EmailAndPassword, signInFailureAction, signInSuccessAction, signOutFailureAction, signOutSuccessAction, USER_ACTION_CHECK_USER_SESSION, USER_ACTION_EMAIL_SIGN_IN_START, USER_ACTION_GOOGLE_SIGN_IN_START, USER_ACTION_SIGN_OUT_START } from "./user.actions";
 
 function* processFirebaseUser(user: FirebaseUser) {
     try {
@@ -61,10 +61,24 @@ export function* onCheckUserSessionSaga() {
     yield takeLatest(USER_ACTION_CHECK_USER_SESSION, checkUserSession)
 }
 
+function* signOut() {
+    try {
+        yield auth.signOut()
+        yield put(signOutSuccessAction())
+    } catch (error: any) {
+        yield put(signOutFailureAction(error?.message))
+    }
+}
+
+export function* onSignOutSaga() {
+    yield takeLatest(USER_ACTION_SIGN_OUT_START, signOut)
+}
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignInStartSaga),
         call(onEmailSignInStartSaga),
         call(onCheckUserSessionSaga),
+        call(onSignOutSaga),
     ])
 }

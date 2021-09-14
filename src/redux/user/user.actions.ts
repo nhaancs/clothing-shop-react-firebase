@@ -30,3 +30,19 @@ export const USER_ACTION_CHECK_USER_SESSION = 'USER_ACTION_CHECK_USER_SESSION'
 export const checkUserSessionAction = (): Action<void> => ({
     type: USER_ACTION_CHECK_USER_SESSION
 })
+
+export const USER_ACTION_SIGN_OUT_START = 'USER_ACTION_SIGN_OUT_START'
+export const signOutStartAction = (): Action<void> => ({
+    type: USER_ACTION_SIGN_OUT_START
+})
+
+export const USER_ACTION_SIGN_OUT_SUCCESS = 'USER_ACTION_SIGN_OUT_SUCCESS'
+export const signOutSuccessAction = (): Action<void> => ({
+    type: USER_ACTION_SIGN_OUT_SUCCESS
+})
+
+export const USER_ACTION_SIGN_OUT_FAILURE = 'USER_ACTION_SIGN_OUT_FAILURE'
+export const signOutFailureAction = (error: string): Action<string> => ({
+    type: USER_ACTION_SIGN_OUT_FAILURE,
+    payload: error
+})
