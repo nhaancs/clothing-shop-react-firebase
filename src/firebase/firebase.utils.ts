@@ -1,5 +1,5 @@
 import * as firebase from "firebase/app";
-import { Auth, getAuth, GoogleAuthProvider, UserCredential } from "firebase/auth";
+import { Auth, getAuth, GoogleAuthProvider, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { collection, CollectionReference, doc, DocumentReference, Firestore, getDoc, getFirestore, QuerySnapshot, setDoc, writeBatch } from "firebase/firestore";
 import { Collection } from "../models/collection.model";
 import { User } from "../models/user.model";
@@ -14,17 +14,17 @@ const config = {
 };
 
 export const createUserProfileDocument = async (
-  userAuth: UserCredential|null, 
+  firebaseUser: FirebaseUser|null, 
   additionalData?: any
 ): Promise<DocumentReference<User>> => {
-  if (!userAuth) {
+  if (!firebaseUser) {
     return Promise.resolve(null) as any
   }
 
-  const userRef = doc(collection(firestore, 'users') as CollectionReference<User>, userAuth.user.uid)
+  const userRef = doc(collection(firestore, 'users') as CollectionReference<User>, firebaseUser.uid)
   const snapShot = await getDoc(userRef)
   if (!snapShot.exists()) {
-    const {displayName, email} = userAuth.user
+    const {displayName, email} = firebaseUser
     const createdAt = new Date()
 
     try {
@@ -52,6 +52,7 @@ export const addCollectionAndDocuments = async <T>(collectionKey: string, docume
   return await batch.commit()
 }
 
+
 export const convertCollectionsSnapshotToMap = (collectionsSnapshot: QuerySnapshot<Collection>): Map<string, Collection> => {
   const transformedCollections: Collection[] = collectionsSnapshot.docs.map(doc => {
     const {title, items} = doc.data()
@@ -71,6 +72,15 @@ export const convertCollectionsSnapshotToMap = (collectionsSnapshot: QuerySnapsh
 }
 
 export const firebaseApp = firebase.initializeApp(config)
+
+export const getCurrentUser = () => {
+  return new Promise<FirebaseUser>((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user as FirebaseUser)
+    }, reject)
+  })
+}
 
 export const auth: Auth = getAuth(firebaseApp)
 export const firestore: Firestore = getFirestore(firebaseApp)

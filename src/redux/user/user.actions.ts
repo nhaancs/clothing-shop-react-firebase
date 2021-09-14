@@ -1,27 +1,10 @@
 import { User } from "../../models/user.model";
 import { Action } from "../store";
 
-export const USER_ACTION_SET_CURRENT_USER = "USER_ACTION_SET_CURRENT_USER";
-export const setCurrentUserAction = (user?: User): Action<User> => {
-    return ({type: USER_ACTION_SET_CURRENT_USER, payload: user})
-}
-
 export const USER_ACTION_GOOGLE_SIGN_IN_START = 'USER_ACTION_GOOGLE_SIGN_IN_START'
 export const googleSignInStartAction = (): Action<User> => ({type: USER_ACTION_GOOGLE_SIGN_IN_START})
 
-export const USER_ACTION_GOOGLE_SIGN_IN_SUCCESS = 'USER_ACTION_GOOGLE_SIGN_IN_SUCCESS'
-export const googleSignInSuccessAction = (user: User): Action<User> => ({
-    type: USER_ACTION_GOOGLE_SIGN_IN_SUCCESS,
-    payload: user
-})
-
-export const USER_ACTION_GOOGLE_SIGN_IN_FAILURE = 'USER_ACTION_GOOGLE_SIGN_IN_FAILURE'
-export const googleSignInFailureAction = (error: string): Action<User|string> => ({
-    type: USER_ACTION_GOOGLE_SIGN_IN_FAILURE, 
-    payload: error
-})
-
-interface EmailAndPassword {
+export interface EmailAndPassword {
     email: string
     password: string
 }
@@ -31,14 +14,19 @@ export const emailSignInStartAction = (loginInfo: EmailAndPassword): Action<Emai
     payload: loginInfo
 })
 
-export const USER_ACTION_EMAIL_SIGN_IN_SUCCESS = 'USER_ACTION_EMAIL_SIGN_IN_SUCCESS'
-export const emailSignInSuccessAction = (user: User): Action<User> => ({
-    type: USER_ACTION_EMAIL_SIGN_IN_SUCCESS,
+export const USER_ACTION_SIGN_IN_SUCCESS = 'USER_ACTION_SIGN_IN_SUCCESS'
+export const signInSuccessAction = (user: User): Action<User> => ({
+    type: USER_ACTION_SIGN_IN_SUCCESS,
     payload: user
 })
 
-export const USER_ACTION_EMAIL_SIGN_IN_FAILURE = 'USER_ACTION_EMAIL_SIGN_IN_FAILURE'
-export const emailSignInFailureAction = (error: string): Action<User|string> => ({
-    type: USER_ACTION_EMAIL_SIGN_IN_FAILURE,
+export const USER_ACTION_SIGN_IN_FAILURE = 'USER_ACTION_SIGN_IN_FAILURE'
+export const signInFailureAction = (error: string): Action<User|string> => ({
+    type: USER_ACTION_SIGN_IN_FAILURE,
     payload: error
+})
+
+export const USER_ACTION_CHECK_USER_SESSION = 'USER_ACTION_CHECK_USER_SESSION'
+export const checkUserSessionAction = (): Action<void> => ({
+    type: USER_ACTION_CHECK_USER_SESSION
 })

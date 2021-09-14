@@ -5,26 +5,31 @@ import { Redirect } from "react-router-dom";
 import { Dispatch } from "redux";
 import "./App.css";
 import Header from "./components/header/header.component";
-import { User } from "./models/user.model";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import HomePage from "./pages/home/home.component";
 import ShopPage from "./pages/shop/shop.component";
 import SigninAndSignupPage from "./pages/signin-and-signup/signin-and-signup.component";
 import { RootState } from "./redux/store";
-import { setCurrentUserAction } from "./redux/user/user.actions";
+import { checkUserSessionAction } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
 const mapStateToProps = (state: RootState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
 });
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCurrentUser: (user?: User) => dispatch(setCurrentUserAction(user)),
-});
-const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const mapDispathToProps = (dispatch: Dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSessionAction())
+})
+
+const connector = connect(mapStateToProps, mapDispathToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 interface AppProps extends PropsFromRedux {}
 
 class App extends React.Component<AppProps> {
+  componentDidMount() {
+    this.props.checkUserSession()
+  }
+  
   render(): ReactNode {
     return (
       <div>

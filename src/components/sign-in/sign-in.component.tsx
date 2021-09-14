@@ -1,9 +1,7 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { ReactNode } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Dispatch } from "redux";
-import { auth } from "../../firebase/firebase.utils";
-import { googleSignInStartAction } from "../../redux/user/user.actions";
+import { emailSignInStartAction, googleSignInStartAction } from "../../redux/user/user.actions";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 import './sign-in.styles.scss';
@@ -11,7 +9,8 @@ import './sign-in.styles.scss';
 
 const mapDispathToProps = (dispatch: Dispatch) => {
     return {
-        googleSignInStart: () => dispatch(googleSignInStartAction())
+        googleSignInStart: () => dispatch(googleSignInStartAction()),
+        emailSignInStart: (email: string, password: string) => dispatch(emailSignInStartAction({email, password}))
     }
 }
 
@@ -38,13 +37,9 @@ class SignIn extends React.Component<SignInProps, SignInState> {
 
     handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault()
+        const {emailSignInStart} = this.props
         const {email, password} = this.state
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password)
-        } catch (err) {
-            console.error(err)
-        }
+        emailSignInStart(email, password)
     }
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +49,8 @@ class SignIn extends React.Component<SignInProps, SignInState> {
     }
 
     render(): ReactNode {
+        const {googleSignInStart} = this.props
+
         return (
             <div className='sign-in'>
                 <h2 className='title'>I already have an account</h2>
@@ -79,7 +76,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                         <CustomButton type="submit">Sign In</CustomButton>
                         <CustomButton 
                             type='button' 
-                            onClick={this.props.googleSignInStart} 
+                            onClick={googleSignInStart} 
                             isGoogleSignIn
                             >Sign in with Google</CustomButton>
                     </div>
