@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Dispatch } from "redux";
-import { emailSignInStartAction, googleSignInStartAction } from "../../redux/user/user.actions";
+import { EmailAndPassword, emailSignInStartAction, googleSignInStartAction } from "../../redux/user/user.actions";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
 import './sign-in.styles.scss';
@@ -19,71 +19,56 @@ const connector = connect(null, mapDispathToProps)
 type PropsFromRedux = ConnectedProps<typeof connector>
 interface SignInProps extends PropsFromRedux {}
 
-interface SignInState {
-    email: string
-    password: string
-    [key: string]: string
-}
+const SignIn = ({emailSignInStart, googleSignInStart}: SignInProps) => {
+    const [loginInfo, setLoginInfo] = useState<EmailAndPassword>({email: '', password: ''})
+    const {email, password} = loginInfo
 
-class SignIn extends React.Component<SignInProps, SignInState> {
-    constructor(props: SignInProps) {
-        super(props)
-
-        this.state = {
-            email: '',
-            password: ''
-        }
-    }
-
-    handleSubmit = async (event: { preventDefault: () => void; }) => {
+    const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault()
-        const {emailSignInStart} = this.props
-        const {email, password} = this.state
         emailSignInStart(email, password)
     }
 
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {value, name} = event.target
 
-        this.setState({[name]: value})
+        setLoginInfo({
+            ...loginInfo,
+            [name]: value
+        })
     }
 
-    render(): ReactNode {
-        const {googleSignInStart} = this.props
+    return (
+        <div className='sign-in'>
+            <h2 className='title'>I already have an account</h2>
+            <span>Sign in with your email and password</span>
 
-        return (
-            <div className='sign-in'>
-                <h2 className='title'>I already have an account</h2>
-                <span>Sign in with your email and password</span>
+            <form className='sign-in-form' onSubmit={handleSubmit}>
+                <FormInput 
+                    type="text"
+                    name="email" 
+                    label="Email" 
+                    value={email}
+                    handleChange={handleChange} 
+                    required />
+                <FormInput 
+                    type="password"
+                    name="password" 
+                    label="Password" 
+                    value={password} 
+                    handleChange={handleChange} 
+                    required />
 
-                <form className='sign-in-form' onSubmit={this.handleSubmit}>
-                    <FormInput 
-                        type="text"
-                        name="email" 
-                        label="Email" 
-                        value={this.state.email}
-                        handleChange={this.handleChange} 
-                        required />
-                    <FormInput 
-                        type="password"
-                        name="password" 
-                        label="Password" 
-                        value={this.state.password} 
-                        handleChange={this.handleChange} 
-                        required />
-
-                    <div className="buttons">
-                        <CustomButton type="submit">Sign In</CustomButton>
-                        <CustomButton 
-                            type='button' 
-                            onClick={googleSignInStart} 
-                            isGoogleSignIn
-                            >Sign in with Google</CustomButton>
-                    </div>
-                </form>
-            </div>
-        )
-    }
+                <div className="buttons">
+                    <CustomButton type="submit">Sign In</CustomButton>
+                    <CustomButton 
+                        type='button' 
+                        onClick={googleSignInStart} 
+                        isGoogleSignIn
+                        >Sign in with Google</CustomButton>
+                </div>
+            </form>
+        </div>
+    )
 }
 
 export default connector(SignIn)
