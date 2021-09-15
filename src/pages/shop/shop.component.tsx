@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Route, RouteComponentProps } from "react-router-dom";
 import { Dispatch } from "redux";
@@ -17,27 +17,24 @@ type PropsFromReduxAndRoute = ConnectedProps<typeof connector> &
 
 interface ShopPageProps extends PropsFromReduxAndRoute {}
 
-class ShopPage extends React.Component<ShopPageProps> {
-  componentDidMount() {
-    this.props?.fetchCollectionsStart();
-  }
+const ShopPage = ({fetchCollectionsStart, match}: ShopPageProps) => {
+  useEffect(() => {
+    fetchCollectionsStart();
+  },[fetchCollectionsStart])
 
-  render(): ReactNode {
-    const { match } = this.props;
-    return (
-      <div className="shop-page">
-        <Route
-          exact
-          path={match.path}
-          component={CollectionOverviewContainer}
-        />
-        <Route
-          path={`${match.path}/:collectionId`}
-          component={CollectionPageContainer}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="shop-page">
+      <Route
+        exact
+        path={match.path}
+        component={CollectionOverviewContainer}
+      />
+      <Route
+        path={`${match.path}/:collectionId`}
+        component={CollectionPageContainer}
+      />
+    </div>
+  );
 }
 
 export default connector(ShopPage);
