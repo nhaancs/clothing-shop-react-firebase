@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Route, Switch } from "react-router";
 import { Redirect } from "react-router-dom";
@@ -25,33 +25,31 @@ const connector = connect(mapStateToProps, mapDispathToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 interface AppProps extends PropsFromRedux {}
 
-class App extends React.Component<AppProps> {
-  componentDidMount() {
-    this.props.checkUserSession()
-  }
-  
-  render(): ReactNode {
-    return (
-      <div>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={CheckoutPage} />
-          <Route
-            path="/signin"
-            render={(_) =>
-              this.props?.currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <SigninAndSignupPage />
-              )
-            }
-          />
-        </Switch>
-      </div>
-    );
-  }
+const App = ({checkUserSession, currentUser}: AppProps) => {
+  useEffect(() => {
+    checkUserSession()
+  }, [checkUserSession])
+
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
+        <Route
+          path="/signin"
+          render={(_) =>
+            currentUser ? (
+              <Redirect to="/" />
+            ) : (
+              <SigninAndSignupPage />
+            )
+          }
+        />
+      </Switch>
+    </div>
+  );
 }
 
 export default connector(App);
