@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import CollectionItemCmp from "../../components/collection-item/collection-item.component";
@@ -19,15 +19,25 @@ const connector = connect(mapStateToProps)
 
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps<CollectionPageRouteParams>
 
-const CollectionPage = ({match, collection}: PropsFromRedux) => (
-    <div className='collection-page'>
-        <h2 className='title'>{collection?.title}</h2>
-        <div className='items'>
-            {
-                collection?.items.map(item => <CollectionItemCmp key={item.id} item={item} />)
-            }
+const CollectionPage = ({collection}: PropsFromRedux) => {
+    // use useEffect as componentWillUnmount
+    useEffect(() => {
+        // clean up function, get call before component unmounted
+        return () => { 
+            
+        }
+    }, [])
+
+    return (
+        <div className='collection-page'>
+            <h2 className='title'>{collection?.title}</h2>
+            <div className='items'>
+                {
+                    collection?.items.map(item => <CollectionItemCmp key={item.id} item={item} />)
+                }
+            </div>
         </div>
-    </div>
-)
+    )
+}
 
 export default connector(CollectionPage)
