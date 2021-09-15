@@ -1,105 +1,97 @@
-import React, { ReactNode } from "react";
+import React, { useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { Dispatch } from "redux";
 import { SignUpInfo, signUpStartAction } from "../../redux/user/user.actions";
 import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
-import './sign-up.styles.scss';
+import "./sign-up.styles.scss";
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    signUpStart: (signUpInfo: SignUpInfo) => dispatch(signUpStartAction(signUpInfo))
-})
+  signUpStart: (signUpInfo: SignUpInfo) =>
+    dispatch(signUpStartAction(signUpInfo)),
+});
 
-const connector = connect(null, mapDispatchToProps)
+const connector = connect(null, mapDispatchToProps);
 
-type PropsFromRedux = ConnectedProps<typeof connector>
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface SignUpProps extends PropsFromRedux{}
+interface SignUpProps extends PropsFromRedux {}
 
-interface SignUpState {
-    email: string
-    password: string
-    confirmPassword: string
-    displayName: string
-    [key: string]: string
-}
+const SignUp = ({ signUpStart }: SignUpProps) => {
+  const [signUpInfo, setSignUpInfo] = useState<SignUpInfo & { confirmPassword: string }>({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    displayName: "",
+  });
 
-class SignUp extends React.Component<SignUpProps, SignUpState> {
-    constructor(props: SignUpProps) {
-        super(props)
+  const { displayName, email, password, confirmPassword } = signUpInfo;
 
-        this.state = {
-            email: '',
-            password: '',
-            confirmPassword: '',
-            displayName: ''
-        }
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("passwords don't match");
+      return;
     }
 
-    handleSubmit = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault()
+    signUpStart({ email, password, displayName });
+  };
 
-        const {signUpStart} = this.props
-        const {displayName, email, password, confirmPassword} = this.state
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
 
-        if (password !== confirmPassword) {
-            alert("passwords don't match")
-            return
-        }
+    setSignUpInfo({ 
+        ...signUpInfo,
+        [name]: value 
+    });
+  };
 
-        signUpStart({email, password, displayName})
-    }
+  return (
+    <div className="sign-up">
+      <h2 className="title">I do not have an account</h2>
+      <span>Sign up with your email and password</span>
 
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {value, name} = event.target
+      <form className="sign-up-form" onSubmit={handleSubmit}>
+        <FormInput
+          name="displayName"
+          type="text"
+          label="Display name"
+          value={displayName}
+          handleChange={handleChange}
+          required
+        />
+        <FormInput
+          type="text"
+          name="email"
+          label="Email"
+          value={email}
+          handleChange={handleChange}
+          required
+        />
+        <FormInput
+          type="password"
+          name="password"
+          label="Password"
+          value={password}
+          handleChange={handleChange}
+          required
+        />
+        <FormInput
+          type="password"
+          name="confirmPassword"
+          label="Confirm Password"
+          value={confirmPassword}
+          handleChange={handleChange}
+          required
+        />
 
-        this.setState({[name]: value})
-    }
+        <div className="buttons">
+          <CustomButton type="submit">Sign Up</CustomButton>
+        </div>
+      </form>
+    </div>
+  );
+};
 
-    render(): ReactNode {
-        const {displayName, email, password, confirmPassword} = this.state
-        return (
-            <div className='sign-up'>
-                <h2 className='title'>I do not have an account</h2>
-                <span>Sign up with your email and password</span>
-
-                <form className='sign-up-form' onSubmit={this.handleSubmit}>
-                    <FormInput 
-                        name="displayName" 
-                        type="text" 
-                        label="Display name" 
-                        value={displayName} 
-                        handleChange={this.handleChange} 
-                        required />
-                    <FormInput 
-                        type="text"
-                        name="email" 
-                        label="Email" 
-                        value={email} 
-                        handleChange={this.handleChange} 
-                        required />
-                    <FormInput 
-                        type="password"
-                        name="password" 
-                        label="Password" 
-                        value={password} 
-                        handleChange={this.handleChange} 
-                        required />
-                    <FormInput 
-                        type="password"
-                        name="confirmPassword" 
-                        label="Confirm Password" 
-                        value={confirmPassword} 
-                        handleChange={this.handleChange} 
-                        required />
-
-                    <div className="buttons">
-                        <CustomButton type="submit">Sign Up</CustomButton>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-}
-
-export default connector(SignUp)
+export default connector(SignUp);
