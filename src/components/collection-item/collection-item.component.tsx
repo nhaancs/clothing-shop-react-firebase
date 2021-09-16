@@ -4,9 +4,7 @@ import { Dispatch } from "redux";
 import { CartItem } from "../../models/cart.model";
 import { CollectionItem } from "../../models/collection.model";
 import { addCartItemAction } from "../../redux/cart/cart.actions";
-import CustomButton from "../custom-button/custom-button.component";
-
-import './collection-item.styles.scss'
+import { AddButton, BackgroundImage, CollectionFooterContainer, CollectionItemContainer, NameContainer, PriceContainer } from "./collection-item.styles";
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     addCartItem: (item: CollectionItem) => {
@@ -23,21 +21,23 @@ const connector = connect(null, mapDispatchToProps)
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 interface CollectionItemProps extends PropsFromRedux {
-    item: CollectionItem
+  item: CollectionItem
 }
 
-const CollectionItemCmp = ({ item, addCartItem }: CollectionItemProps) => (
-  <div className="collection-item">
-    <div
-      className="image"
-      style={{ backgroundImage: `url(${item?.imageUrl})` }}
-    ></div>
-    <div className="collection-footer">
-      <span className="name">{item?.name}</span>
-      <span className="price">{item?.price}</span>
-    </div>
-    <CustomButton onClick={() => addCartItem(item)} inverted>Add to cart</CustomButton>
-  </div>
-);
+const CollectionItemCmp = ({ item, addCartItem }: CollectionItemProps) => {
+  const { name, price, imageUrl } = item;
+  return (
+    <CollectionItemContainer>
+      <BackgroundImage className='image' imageUrl={imageUrl} />
+      <CollectionFooterContainer>
+        <NameContainer>{name}</NameContainer>
+        <PriceContainer>{price}</PriceContainer>
+      </CollectionFooterContainer>
+      <AddButton onClick={() => addCartItem(item)} inverted>
+        Add to cart
+      </AddButton>
+    </CollectionItemContainer>
+  );
+}
 
 export default connector(CollectionItemCmp)

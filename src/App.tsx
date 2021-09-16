@@ -3,8 +3,8 @@ import { connect, ConnectedProps } from "react-redux";
 import { Route, Switch } from "react-router";
 import { Redirect } from "react-router-dom";
 import { Dispatch } from "redux";
-import "./App.css";
 import Header from "./components/header/header.component";
+import { GlobalStyles } from "./global.styles";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import HomePage from "./pages/home/home.component";
 import ShopPage from "./pages/shop/shop.component";
@@ -32,6 +32,7 @@ const App = ({checkUserSession, currentUser}: AppProps) => {
 
   return (
     <div>
+      <GlobalStyles />
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
