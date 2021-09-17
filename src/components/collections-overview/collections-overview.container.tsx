@@ -5,7 +5,7 @@ import WithSpinner from "../with-spinner/with-spinner.component";
 import CollectionsOverview from "./collections-overview.component";
 
 const mapStateToProps = (state: RootState) => ({
-  isCollectionFetching: selectCollectionFetching(state),
+  loading: selectCollectionFetching(state),
 });
 
 const CollectionOverviewContainer = connect(mapStateToProps)(WithSpinner(CollectionsOverview))

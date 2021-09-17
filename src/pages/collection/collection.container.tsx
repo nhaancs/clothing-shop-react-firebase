@@ -5,7 +5,7 @@ import { RootState } from "../../redux/store";
 import CollectionPage from './collection.component'
 
 const mapStateToProps = (state: RootState) => ({
-  isCollectionFetching: selectCollectionFetching(state),
+  loading: selectCollectionFetching(state),
 });
 
 const CollectionPageContainer = connect(mapStateToProps)(WithSpinner(CollectionPage))
