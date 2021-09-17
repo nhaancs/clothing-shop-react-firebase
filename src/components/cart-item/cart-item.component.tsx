@@ -17,4 +17,4 @@ const CartItemCmp = ({item: {imageUrl, price, name, quantity}}: CartItemProps) =
     </div>
 )
 
-export default CartItemCmp;
+export default React.memo(CartItemCmp);

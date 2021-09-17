@@ -22,15 +22,15 @@ interface SignInProps extends PropsFromRedux {}
 const SignIn = ({emailSignInStart, googleSignInStart}: SignInProps) => {
     const [loginInfo, setLoginInfo] = useState<EmailAndPassword>({email: '', password: ''})
     const {email, password} = loginInfo
-
+    
     const handleSubmit = async (event: { preventDefault: () => void; }) => {
         event.preventDefault()
         emailSignInStart(email, password)
     }
-
+    
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {value, name} = event.target
-
+        
         setLoginInfo({
             ...loginInfo,
             [name]: value
